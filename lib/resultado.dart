@@ -1,17 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/basic.dart';
 
 class Resultado extends StatelessWidget {
-  const Resultado({super.key});
+  final int pontuacao;
+  final void Function() quandoReiniciarQuestionario;
+
+  const Resultado(this.pontuacao, this.quandoReiniciarQuestionario,
+      {super.key});
+
+  String get fraseResultado {
+    if (pontuacao < 8) {
+      return 'Parabéns!';
+    } else if (pontuacao < 12) {
+      return 'Você é bom!';
+    } else if (pontuacao < 16) {
+      return 'Impressionante!';
+    } else {
+      return 'Nível Jedi!';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Você está de Parabuens!',
-        style: TextStyle(
-          fontSize: 28,
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Center(
+          child: Text(
+            fraseResultado,
+            style: TextStyle(
+              fontSize: 28,
+            ),
+          ),
         ),
-      ),
+        OutlinedButton(
+          child: Text(
+            'Reiniciar?',
+            style: TextStyle(fontSize: 18),
+          ),
+          style: OutlinedButton.styleFrom(
+              primary: Colors.blue, disabledBackgroundColor: null),
+          onPressed: quandoReiniciarQuestionario,
+        )
+      ],
     );
   }
 }

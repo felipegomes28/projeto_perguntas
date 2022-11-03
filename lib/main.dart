@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import './questionario.dart';
 import './resultado.dart';
 
-void main() => runApp(PerguntaApp());
+void main() => runApp(const PerguntaApp());
 
 class _PerguntaAppState extends State<PerguntaApp> {
   var _perguntaSelecionada = 0;
@@ -11,10 +11,10 @@ class _PerguntaAppState extends State<PerguntaApp> {
     {
       'texto': 'Qual é a sua cor favorita?',
       'respostas': [
-        {'texto': 'Preto', 'nota': 10},
-        {'texto': 'Vermelho', 'nota': 5},
-        {'texto': 'Verde', 'nota': 3},
-        {'texto': 'Branco', 'nota': 1},
+        {'texto': 'Preto', 'pontuacao': 10},
+        {'texto': 'Vermelho', 'pontuacao': 5},
+        {'texto': 'Verde', 'pontuacao': 3},
+        {'texto': 'Branco', 'pontuacao': 1},
       ],
     },
     {
@@ -44,7 +44,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
         _pontuacaoTotal += pontuacao;
       });
     }
-    print(_pontuacaoTotal);
+  }
+
+  void _reiniciarQuestionario() {
+    setState(() {
+      _perguntaSelecionada = 0;
+      _pontuacaoTotal = 0;
+    });
   }
 
   bool get temPerguntaSelecionada {
@@ -56,7 +62,7 @@ class _PerguntaAppState extends State<PerguntaApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: Text('Perguntas'),
+          title: const Text('Perguntas'),
         ),
         body: temPerguntaSelecionada
             ? Questionario(
@@ -64,12 +70,13 @@ class _PerguntaAppState extends State<PerguntaApp> {
                 perguntaSelecionada: _perguntaSelecionada,
                 quandoResponder: _responder,
               )
-            : const Resultado(),
+            : Resultado(_pontuacaoTotal, _reiniciarQuestionario),
       ),
     );
   }
 }
 
+@override
 class PerguntaApp extends StatefulWidget {
   const PerguntaApp({super.key});
 
